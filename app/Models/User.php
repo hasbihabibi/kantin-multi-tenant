@@ -27,7 +27,7 @@ use Laravel\Fortify\PasskeyAuthenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'role', 'status'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements PasskeyUser
 {
@@ -57,5 +57,29 @@ class User extends Authenticatable implements PasskeyUser
         return Str::length($initials) > 1
             ? Str::substr($initials, 0, 1).Str::substr($initials, -1)
             : $initials;
+    }
+
+    /**
+     * Apakah user memegang role tertentu. Kontrak role interim Modul 2
+     * (kolom `role`); diformalkan menjadi relasi pada Modul 4–5.
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role && $this->isActive();
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isTenantOperator(): bool
+    {
+        return $this->hasRole('tenant');
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
     }
 }
