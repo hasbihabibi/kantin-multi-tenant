@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Canteen;
-use App\Models\Tenant;
 use App\Models\Menu;
+use App\Models\Tenant;
+use Illuminate\Database\Seeder;
 
 class DemoCanteenSeeder extends Seeder
 {
@@ -17,7 +16,7 @@ class DemoCanteenSeeder extends Seeder
     {
         $canteen = Canteen::create([
             'code' => 'K-PARWIS',
-            'name' => 'Kantin Pariwisata'
+            'name' => 'Kantin Pariwisata',
         ]);
 
         $tenant1 = Tenant::create([
