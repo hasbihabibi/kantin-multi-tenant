@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Menu;
 use App\Models\User;
 use App\Support\Tenancy\TenantContext;
 
@@ -11,10 +12,5 @@ class MenuPolicy
     {
         // Boleh diubah HANYA JIKA menu ini milik tenant yang sedang aktif di Context
         return $menu->tenant_id === app(TenantContext::class)->id();
-    }
-
-    public function __construct()
-    {
-        //
     }
 }
