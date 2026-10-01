@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\Tenant;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Models\UserCanteenRole;
 
 class TenantPolicy
 {

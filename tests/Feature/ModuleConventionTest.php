@@ -56,7 +56,8 @@ class ModuleConventionTest extends TestCase
         foreach (['Admin', 'Catalog', 'Ordering', 'Payments', 'Kitchen', 'Reporting'] as $module) {
             $alias = strtolower($module);
             $this->assertArrayHasKey($alias, $hints, "Namespace view '{$alias}::' tidak terdaftar");
-            $this->assertContains(app_path("Modules/{$module}/resources/views"), $hints[$alias]);
+            $expectedPath = app_path('Modules'.DIRECTORY_SEPARATOR.$module).'/resources/views';
+            $this->assertContains($expectedPath, $hints[$alias]);
         }
     }
 
