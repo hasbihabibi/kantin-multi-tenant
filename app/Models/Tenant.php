@@ -35,6 +35,12 @@ class Tenant extends Model
         return $this->hasOne(TenantBalance::class);
     }
 
+    /** @return HasMany<TenantOperatingHour, $this> */
+    public function operatingHours(): HasMany
+    {
+        return $this->hasMany(TenantOperatingHour::class);
+    }
+
     /** @return HasMany<Menu, $this> */
     public function menus(): HasMany
     {
@@ -47,15 +53,15 @@ class Tenant extends Model
         return $this->hasMany(CommissionScheme::class);
     }
 
-    /** @return HasMany<UserTenantRole, $this> */
-    public function tenantRoles(): HasMany
-    {
-        return $this->hasMany(UserTenantRole::class);
-    }
-
     /** @return HasMany<TenantBankAccount, $this> */
     public function bankAccounts(): HasMany
     {
         return $this->hasMany(TenantBankAccount::class);
+    }
+
+    /** @return HasMany<UserTenantRole, $this> */
+    public function tenantRoles(): HasMany
+    {
+        return $this->hasMany(UserTenantRole::class);
     }
 }

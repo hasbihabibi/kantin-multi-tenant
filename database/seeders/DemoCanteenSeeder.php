@@ -11,15 +11,12 @@ use App\Models\ModifierGroup;
 use App\Models\ModifierOption;
 use App\Models\Tenant;
 use App\Models\TenantBalance;
+use App\Models\TenantOperatingHour;
 use App\Models\User;
 use App\Models\UserCanteenRole;
 use App\Models\UserTenantRole;
 use Illuminate\Database\Seeder;
 
-/**
- * Data demo deterministik & idempoten: 1 kantin, 2 tenant, komisi, katalog, meja, role.
- * Idempoten via firstOrNew + forceFill (kolom guarded seperti tenant_id di-set eksplisit).
- */
 class DemoCanteenSeeder extends Seeder
 {
     public function run(): void
@@ -66,6 +63,16 @@ class DemoCanteenSeeder extends Seeder
                 ]);
             $tenant->save();
             $tenants[$code] = $tenant;
+
+            // UC-02: jam operasional demo (WIB). AYAM buka siang-malam; KOPI buka 24 jam agar demo
+            // pemindaian QR selalu dapat dicoba.
+            [$opens, $closes] = $code === 'AYAM' ? ['10:00:00', '21:00:00'] : ['00:00:00', '23:59:00'];
+            foreach (range(0, 6) as $day) {
+                TenantOperatingHour::withoutGlobalScope('tenant')->updateOrCreate(
+                    ['tenant_id' => $tenant->id, 'day_of_week' => $day],
+                    ['opens_at' => $opens, 'closes_at' => $closes],
+                );
+            }
 
             tap(TenantBalance::firstOrNew(['tenant_id' => $tenant->id]))
                 ->forceFill(['available_amount' => 0, 'held_amount' => 0])->save();
